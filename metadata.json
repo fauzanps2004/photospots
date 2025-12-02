@@ -1,0 +1,7 @@
+{
+  "name": "PhotoSpots ID",
+  "description": "Panduan editorial premium untuk menemukan photobooth dan studio selfie estetik di Indonesia menggunakan data Google Maps.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
