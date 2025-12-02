@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 
 interface SearchBarProps {
@@ -16,24 +17,25 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative w-full">
+    <form onSubmit={handleSubmit} className="relative w-full group">
+      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+        <svg className={`w-5 h-5 transition-colors ${isLoading ? 'text-gray-300' : 'text-gray-400 group-focus-within:text-black'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
       <input
         type="text"
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="Cari lokasi..."
+        placeholder="Cari photobooth, mall..."
         disabled={isLoading}
-        className="w-full bg-gray-50 border-none rounded-xl py-4 px-5 text-gray-900 placeholder-gray-400 focus:ring-0 focus:bg-gray-100 transition-all text-lg"
+        className="block w-full pl-11 pr-4 py-4 bg-white border border-gray-200 rounded-2xl text-gray-900 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-black/5 focus:border-black transition-all text-base font-medium disabled:bg-gray-50 disabled:text-gray-400"
       />
-      <button
-        type="submit"
-        disabled={isLoading || !value.trim()}
-        className="absolute right-3 top-1/2 -translate-y-1/2 bg-black text-white w-10 h-10 rounded-lg flex items-center justify-center hover:bg-gray-800 disabled:opacity-0 transition-all"
-      >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-        </svg>
-      </button>
+      {isLoading && (
+        <div className="absolute right-4 top-1/2 -translate-y-1/2">
+            <div className="w-5 h-5 border-2 border-gray-200 border-t-black rounded-full animate-spin"></div>
+        </div>
+      )}
     </form>
   );
 };

@@ -7,22 +7,24 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
-              serif: ['"Playfair Display"', 'serif'],
-              sans: ['"Inter"', 'sans-serif'],
+              sans: ['"Arimo"', 'sans-serif'],
             },
             colors: {
-              editorial: {
-                bg: '#f9f9f7', // Warm off-white
-                text: '#1a1a1a',
-                accent: '#d94e3b', // Muted red/orange
-                secondary: '#8c8c8c',
-              }
+              background: '#F5F5F4', // Stone 100
+              surface: '#FFFFFF',
+              primary: '#171717', // Neutral 900
+              secondary: '#57534E', // Stone 600
+              accent: '#2563EB', // Blue 600
+            },
+            boxShadow: {
+              'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+              'hard': '0 4px 12px rgba(0, 0, 0, 0.08)',
             }
           }
         }
@@ -30,8 +32,11 @@
     </script>
     <style>
       body {
-        background-color: #f9f9f7;
-        color: #1a1a1a;
+        background-color: #F5F5F4;
+        color: #171717;
+        font-family: "Arimo", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
       /* Hide scrollbar for clean look in horizontal lists */
       .no-scrollbar::-webkit-scrollbar {

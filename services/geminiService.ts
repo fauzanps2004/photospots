@@ -1,3 +1,4 @@
+
 import { GoogleGenAI } from "@google/genai";
 import { Coordinates, GroundingChunk } from "../types";
 
@@ -8,24 +9,29 @@ export const searchPhotobooths = async (
   location?: Coordinates
 ): Promise<{ text: string; chunks: GroundingChunk[] }> => {
   try {
-    const modelId = "gemini-2.5-flash"; // Supports Google Maps tool
+    const modelId = "gemini-2.5-flash"; // Supports Google Maps and Search tools
 
-    // Construct a prompt that enforces the Indonesian context
-    let prompt = `Tugas kamu adalah mencari lokasi photobooth, self-photo studio, atau tempat foto instan yang aesthetic di Indonesia.`;
-    
-    if (query.trim()) {
-      prompt += ` Fokus pencarian: "${query}".`;
-    }
+    // Construct a prompt that enforces the Indonesian context, strict filtering, and viral trend search
+    let prompt = `Tugas kamu adalah mencari lokasi **Photobooth Instan** (photobox/photomatic/photogram) yang sedang **VIRAL** atau **TRENDING** (khususnya di TikTok/Instagram) di Indonesia.
 
-    prompt += ` 
-    Konteks Area: Indonesia. Jika tidak ada nama kota spesifik, gunakan lokasi pengguna atau asumsikan Jakarta Selatan/Pusat.
+    LANGKAH KERJA:
+    1. Gunakan **Google Search** untuk mencari tahu apa saja photobooth yang sedang viral saat ini (cari: "photobooth viral tiktok [kota]", "photobox aesthetic terbaru", dll).
+    2. Setelah mendapatkan nama-nama tempatnya, gunakan **Google Maps** untuk mencari lokasi spesifiknya.
+
+    FILTER:
+    - **HANYA** cari tempat yang memiliki mesin photobooth otomatis (langsung cetak).
+    - **JANGAN** sertakan studio foto profesional konvensional yang butuh reservasi fotografer.
+    - Fokus pada brand seperti Photomatics, Photograms, Connect, Pictple, Funworld, atau cafe hits dengan photobooth.
     
-    Prioritas:
-    1. Tempat yang viral di TikTok/Instagram.
-    2. Tempat dengan rating bagus.
+    ` + (query.trim() ? `Fokus pencarian user: "${query}".` : `Jika user tidak menyebut lokasi, asumsikan area populer (Jakarta Selatan/Pusat) atau gunakan lokasi user.`) + `
+
+    Konteks Area: Indonesia.
     
-    Output:
-    Hanya gunakan tool Google Maps untuk mencari tempat-tempat tersebut.`;
+    Prioritas Tampilan:
+    1. **VIRAL TIKTOK**: Tempat yang sering muncul di FYP.
+    2. **AESTHETIC**: Frame lucu & interior unik.
+    
+    Output harus mengandung data Google Maps untuk tempat-tempat tersebut.`;
 
     const toolConfig: any = {
       retrievalConfig: {}
@@ -43,14 +49,15 @@ export const searchPhotobooths = async (
       model: modelId,
       contents: prompt,
       config: {
-        tools: [{ googleMaps: {} }],
+        // Enable both Google Maps (for places) and Google Search (for viral trends)
+        tools: [{ googleMaps: {} }, { googleSearch: {} }],
         toolConfig: toolConfig,
       },
     });
 
     const text = response.text || "";
     
-    // Extract grounding chunks which contain the Map data
+    // Extract grounding chunks which contain the Map and Web data
     const chunks = (response.candidates?.[0]?.groundingMetadata?.groundingChunks || []) as unknown as GroundingChunk[];
 
     return { text, chunks };
