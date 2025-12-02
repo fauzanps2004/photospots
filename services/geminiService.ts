@@ -31,7 +31,9 @@ export const searchPhotobooths = async (
     1. **VIRAL TIKTOK**: Tempat yang sering muncul di FYP.
     2. **AESTHETIC**: Frame lucu & interior unik.
     
-    Output harus mengandung data Google Maps untuk tempat-tempat tersebut.`;
+    PENTING:
+    - Output grounding Google Maps WAJIB memiliki detail lengkap: **Nama Tempat** dan **ALAMAT LENGKAP (Formatted Address)**.
+    - Jangan tampilkan tempat jika data map-nya tidak lengkap.`;
 
     const toolConfig: any = {
       retrievalConfig: {}
